@@ -24,6 +24,7 @@ export default function ContactForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(registrationSchema),
@@ -36,6 +37,7 @@ export default function ContactForm() {
 
   const formSubmitHandler = (data) => {
     console.log(data);
+    reset();
   };
 
   return (
@@ -49,74 +51,49 @@ export default function ContactForm() {
         onSubmit={handleSubmit(formSubmitHandler)}
       >
         {/* Name Field */}
-        <div className="flex flex-col">
-          <label className="font-semibold capitalize">Name : </label>
-          <input
-            type="text"
-            className="border border-gray-700 p-2 rounded"
-            {...register("name")}
-          />
-          {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-          )}
-        </div>
+        <InputField
+          labelFor="Name"
+          field="name"
+          type="text"
+          errorField={errors.name}
+          register={register}
+        />
 
         {/* Email Field */}
-        <div className="flex flex-col">
-          <label className="font-semibold capitalize">Email : </label>
-          <input
-            type="email"
-            className="border border-gray-700 p-2 rounded"
-            {...register("email")}
-          />
-          {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-          )}
-        </div>
+        <InputField
+          labelFor="Email"
+          field="email"
+          type="email"
+          errorField={errors.email}
+          register={register}
+        />
 
         {/* Password Field */}
-        <div className="flex flex-col relative">
-          <label className="font-semibold capitalize">Password: </label>
-          <input
-            type={isPasswordVisible ? "text" : "password"}
-            className="border border-gray-700 p-2 rounded w-full"
-            {...register("password")}
-          />
-          <button
-            type="button"
-            className="absolute top-9 right-2 cursor-pointer"
-            onClick={togglePasswordVisibility}
-          >
-            {isPasswordVisible ? <FaRegEyeSlash /> : <FaRegEye />}
-          </button>
-          {errors.password && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
+        <InputField
+          labelFor="Password"
+          field="password"
+          type={isPasswordVisible ? "text" : "password"}
+          errorField={errors.password}
+          register={register}
+        />
 
         {/* Confirm Password Field */}
-        <div className="flex flex-col relative">
-          <label className="font-semibold capitalize">Confirm Password: </label>
-          <input
-            type={isPasswordVisible ? "text" : "password"}
-            className="border border-gray-700 p-2 rounded w-full"
-            {...register("confirmPassword")}
-          />
-          <button
-            type="button"
-            className="absolute top-9 right-2 cursor-pointer"
-            onClick={togglePasswordVisibility}
-          >
-            {isPasswordVisible ? <FaRegEyeSlash /> : <FaRegEye />}
-          </button>
-          {errors.confirmPassword && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.confirmPassword.message}
-            </p>
-          )}
-        </div>
+        <InputField
+          labelFor="Confirm Password"
+          field="confirmPassword"
+          type={isPasswordVisible ? "text" : "password"}
+          errorField={errors.confirmPassword}
+          register={register}
+          decorator={
+            <button
+              type="button"
+              className="absolute top-9 right-2 cursor-pointer"
+              onClick={togglePasswordVisibility}
+            >
+              {isPasswordVisible ? <FaRegEyeSlash /> : <FaRegEye />}
+            </button>
+          }
+        />
 
         <button className="px-4 py-2 bg-purple-700 text-white font-semibold rounded hover:bg-purple-800 transition">
           Submit
@@ -125,3 +102,32 @@ export default function ContactForm() {
     </section>
   );
 }
+
+const InputField = ({
+  labelFor,
+  type,
+  register,
+  field,
+  errorField,
+  decorator,
+}) => {
+  return (
+    <div
+      className="flex flex-col"
+      style={{
+        position: `${decorator && "relative"}`,
+      }}
+    >
+      <label className="font-semibold capitalize">{labelFor} : </label>
+      <input
+        type={type}
+        className="border border-gray-700 p-2 rounded"
+        {...register(field)}
+      />
+      {decorator && decorator}
+      {errorField && (
+        <p className="text-red-500 text-sm mt-1">{errorField.message}</p>
+      )}
+    </div>
+  );
+};
