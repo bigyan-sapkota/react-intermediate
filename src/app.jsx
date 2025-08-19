@@ -6,6 +6,7 @@ import BearCounterPage from "./pages/bear-counter-page";
 import BlogPage from "./pages/blogs-page";
 import ContactPage from "./pages/contact-page";
 import Footer from "./components/footer";
+import { BACKEND_URL } from "./libs/constants";
 
 export default function App() {
   return (
