@@ -7,10 +7,12 @@ import BlogPage from "./pages/blogs-page";
 import ContactPage from "./pages/contact-page";
 import Footer from "./components/footer";
 import { BACKEND_URL } from "./libs/constants";
+import { Toaster } from "sonner";
 
 export default function App() {
   return (
     <BrowserRouter>
+      <Toaster />
       <Navbar />
       {/* Routes and Route */}
       {/* NOTE : Always use Route tag inside Routes */}
